@@ -20,7 +20,7 @@ const ruleForm = ref<HouseRule>({ name: '', active: 1 })
 const requiredRules = [(val: string) => val && val.length > 0 || 'Please type something']
 
 async function create () {
-  const payload = { name: ruleForm.value.name, active: 1 }
+  const payload = ruleForm.value
   if (lrule.value) {
     await rulesStore.editRule(payload)
   } else {
@@ -40,7 +40,8 @@ async function create () {
     <q-card-section>
       <q-form @submit="create" class="q-gutter-md">
         <q-input filled v-model="ruleForm.name" label="Rule" lazy-rules :rules="requiredRules" />
-        <!-- <q-input filled v-model="ruleForm.active" label="Active" lazy-rules :rules="requiredRules" /> -->
+        <q-toggle v-model="ruleForm.active" :false-value="0" :label="ruleForm.active == 0 ? 'Disable' : 'Active'"
+          :true-value="1" checked-icon="check" color="green" unchecked-icon="clear" v-if="lrule?.id" />
 
         <div>
           <q-btn flat label="Cancel" @click="emits('close')" color="negative" />

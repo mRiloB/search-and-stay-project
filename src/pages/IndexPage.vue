@@ -19,13 +19,18 @@ async function afterForm () {
   _rule.value = null
   showForm.value = false
 }
+
+function onEdit (data: HouseRule) {
+  _rule.value = data
+  showForm.value = true
+}
 </script>
 
 <template>
   <q-page padding>
     <p v-if="rulesStore.list.length == 0">No rules. Add a new rule in the button bellow.</p>
     <q-list v-for="(rule, index) in rulesStore.list" :key="index" class="rounded-borders q-mb-sm" bordered v-else>
-      <rule-list-item :id="rule.id!" :text="rule.name" />
+      <rule-list-item :rule="rule" :text="rule.name" @edit="onEdit" />
     </q-list>
     <q-dialog v-model="showForm" persistent>
       <rule-form :list-rule="_rule" @finish="afterForm" @close="showForm = false" />

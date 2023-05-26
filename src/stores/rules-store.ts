@@ -25,7 +25,7 @@ export const useRulesStore = defineStore('rules', {
         if (err instanceof AxiosError) {
           notify('negative', err.message)
         }
-        notify('negative', String(err) || 'We cannot get the records. Try again.')
+        notify('negative', String(err) || 'Something went wrong. Try again.')
       } finally {
         this.loading = false
       }
@@ -41,7 +41,7 @@ export const useRulesStore = defineStore('rules', {
         if (err instanceof AxiosError) {
           notify('negative', err.message)
         }
-        notify('negative', String(err) || 'We cannot save the record. Try again.')
+        notify('negative', String(err) || 'Something went wrong. Try again.')
       } finally {
         this.loading = false
       }
@@ -57,7 +57,23 @@ export const useRulesStore = defineStore('rules', {
         if (err instanceof AxiosError) {
           notify('negative', err.message)
         }
-        notify('negative', String(err) || 'We cannot edit the record. Try again.')
+        notify('negative', String(err) || 'Something went wrong. Try again.')
+      } finally {
+        this.loading = false
+      }
+    },
+    async deleteRule (id: number) {
+      const houseRules = useHouseRules()
+      this.loading = true
+      try {
+        const res = await houseRules._delete(id)
+        notify('positive', res.message)
+        await this.loadRules()
+      } catch (err) {
+        if (err instanceof AxiosError) {
+          notify('negative', err.message)
+        }
+        notify('negative', String(err) || 'Something went wrong. Try again.')
       } finally {
         this.loading = false
       }
