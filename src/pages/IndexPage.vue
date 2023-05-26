@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRulesStore } from 'stores/rules-store'
+import { HouseRule } from 'src/types/house-rule'
 import RuleListItem from 'src/components/RuleListItem.vue'
 import RuleForm from 'src/components/RuleForm.vue'
-import { HouseRule } from 'src/types/house-rule'
+import RuleListPagination from 'src/components/RuleListPagination.vue'
 
 onMounted(() => list())
 
@@ -32,12 +33,16 @@ function onEdit (data: HouseRule) {
     <q-list v-for="(rule, index) in rulesStore.list" :key="index" class="rounded-borders q-mb-sm" bordered v-else>
       <rule-list-item :rule="rule" :text="rule.name" @edit="onEdit" />
     </q-list>
+    <rule-list-pagination />
+
     <q-dialog v-model="showForm" persistent>
       <rule-form :list-rule="_rule" @finish="afterForm" @close="showForm = false" />
     </q-dialog>
+
     <q-inner-loading :showing="rulesStore.isLoading">
       <q-spinner-gears size="50px" color="primary" />
     </q-inner-loading>
+
     <q-page-sticky position="bottom-right" :offset="[18, 18]">
       <q-btn fab icon="add" color="primary" @click="showForm = true" />
     </q-page-sticky>

@@ -22,8 +22,8 @@ export type HouseRuleList = {
       current_page: number
       total_pages: number
       links: {
-        next: null | number
-        prev: null | number
+        next: null | string
+        prev: null | string
       }
     }
   }

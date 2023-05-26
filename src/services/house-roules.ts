@@ -13,8 +13,8 @@ export function useHouseRules () {
     return data
   }
 
-  async function _read () {
-    const { data } = await api.get<HouseRuleList>('/house_rules', { headers })
+  async function _read (page: number) {
+    const { data } = await api.get<HouseRuleList>('/house_rules?page='.concat(String(page)), { headers })
     return data
   }
 
