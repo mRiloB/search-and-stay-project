@@ -8,11 +8,13 @@ export const useRulesStore = defineStore('rules', {
   persist: true,
   state: () => ({
     rules: {} as HouseRuleList,
+    ruleById: {} as HouseRule,
     loading: false,
     pagination: 1
   }),
   getters: {
     list: (state) => state.rules.data ? state.rules.data.entities : [],
+    selectedRule: (state) => state.ruleById,
     isLoading: (state) => state.loading,
     currentPage: (state) => state.pagination,
     hasPreviousPage: (state) => state.rules.data.pagination.links.prev == null,
@@ -36,8 +38,9 @@ export const useRulesStore = defineStore('rules', {
       } catch (err) {
         if (err instanceof AxiosError) {
           notify('negative', err.message)
+        } else {
+          notify('negative', String(err) || 'Something went wrong. Try again.')
         }
-        notify('negative', String(err) || 'Something went wrong. Try again.')
       } finally {
         this.loading = false
       }
@@ -52,8 +55,9 @@ export const useRulesStore = defineStore('rules', {
       } catch (err) {
         if (err instanceof AxiosError) {
           notify('negative', err.message)
+        } else {
+          notify('negative', String(err) || 'Something went wrong. Try again.')
         }
-        notify('negative', String(err) || 'Something went wrong. Try again.')
       } finally {
         this.loading = false
       }
@@ -68,8 +72,9 @@ export const useRulesStore = defineStore('rules', {
       } catch (err) {
         if (err instanceof AxiosError) {
           notify('negative', err.message)
+        } else {
+          notify('negative', String(err) || 'Something went wrong. Try again.')
         }
-        notify('negative', String(err) || 'Something went wrong. Try again.')
       } finally {
         this.loading = false
       }
@@ -84,11 +89,28 @@ export const useRulesStore = defineStore('rules', {
       } catch (err) {
         if (err instanceof AxiosError) {
           notify('negative', err.message)
+        } else {
+          notify('negative', String(err) || 'Something went wrong. Try again.')
         }
-        notify('negative', String(err) || 'Something went wrong. Try again.')
       } finally {
         this.loading = false
       }
     },
+    async showRule (id: number) {
+      const houseRules = useHouseRules()
+      this.loading = true
+      try {
+        const res = await houseRules._show(id)
+        this.ruleById = res.data as HouseRule
+      } catch (err) {
+        if (err instanceof AxiosError) {
+          notify('negative', err.message)
+        } else {
+          notify('negative', String(err) || 'Something went wrong. Try again.')
+        }
+      } finally {
+        this.loading = false
+      }
+    }
   },
 });

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRulesStore } from 'stores/rules-store'
-import { HouseRule } from 'src/types/house-rule'
 import RuleListItem from 'src/components/RuleListItem.vue'
 import RuleForm from 'src/components/RuleForm.vue'
 import RuleListPagination from 'src/components/RuleListPagination.vue'
@@ -10,19 +9,19 @@ onMounted(() => list())
 
 const rulesStore = useRulesStore()
 const showForm = ref(false)
-const _rule = ref<null | HouseRule>(null)
+const _ruleId = ref<null | number>(null)
 
 async function list () {
   await rulesStore.loadRules()
 }
 
 async function afterForm () {
-  _rule.value = null
+  _ruleId.value = null
   showForm.value = false
 }
 
-function onEdit (data: HouseRule) {
-  _rule.value = data
+function onEdit (data: number) {
+  _ruleId.value = data
   showForm.value = true
 }
 </script>
@@ -36,7 +35,7 @@ function onEdit (data: HouseRule) {
     <rule-list-pagination />
 
     <q-dialog v-model="showForm" persistent>
-      <rule-form :list-rule="_rule" @finish="afterForm" @close="showForm = false" />
+      <rule-form :list-id="_ruleId" @finish="afterForm" @close="showForm = false" />
     </q-dialog>
 
     <q-inner-loading :showing="rulesStore.isLoading">

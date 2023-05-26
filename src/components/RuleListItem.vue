@@ -30,7 +30,7 @@ async function deleteRule () {
       <q-btn size="12px" flat dense round icon="more_vert">
         <q-menu auto-close>
           <q-list style="min-width: 100px">
-            <q-item clickable @click="emits('edit', rule)">
+            <q-item clickable @click="emits('edit', rule.id)">
               <q-item-section class="menu-item">
                 <q-icon class="q-mr-sm" size="xs" name="edit" />
                 Edit
