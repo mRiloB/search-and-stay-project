@@ -10,6 +10,10 @@ const $q = useQuasar()
 const _iconDarkMode = computed(() => $q.dark.isActive ? 'light_mode' : 'dark_mode')
 const showLogout = ref(false)
 
+function _changeMode () {
+  $q.dark.toggle()
+}
+
 function _logout () {
   userStore.$reset()
   showLogout.value = false
@@ -26,7 +30,7 @@ function _logout () {
         </q-toolbar-title>
 
         <div>
-          <q-btn flat round color="primary" text-color="white" :icon="_iconDarkMode" @click="$q.dark.toggle()" />
+          <q-btn flat round color="primary" text-color="white" :icon="_iconDarkMode" @click="_changeMode" />
           <q-btn flat round color="primary" text-color="white" icon="logout" @click="showLogout = true"
             v-if="userStore.isAuthenticated" />
           <q-dialog v-model="showLogout" persistent>
